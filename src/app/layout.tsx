@@ -1,11 +1,24 @@
 import type { Metadata } from "next";
-import { Geologica } from "next/font/google";
+import { Poppins, DM_Sans, Playfair_Display } from "next/font/google";
 import "@/app/styles/globals.css";
+import DarkModeToggle from "@/app/components/ui/dark_mode_togle";
 
-const geologica = Geologica({
-  variable: "--font-geologica",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+
+const playfairDisplay = Playfair_Display({
+  variable: "--font-playfair-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -19,8 +32,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={geologica.variable}>
-      <body className="antialiased bg-[#161616] text-white">{children}</body>
+    <html
+      lang="en"
+      className={`${poppins.variable} ${dmSans.variable} ${playfairDisplay.variable}`}
+    >
+      <body className="antialiased bg-[#161616]">{children}</body>
     </html>
   );
 }

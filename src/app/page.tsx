@@ -9,6 +9,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TechStack from "./components/sections/techstack";
 import Footer from "./components/layouts/footer";
+import { LoadingAnimation } from "./components/sections/splash_screen";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,6 +60,7 @@ export default function Home() {
 
   return (
     <>
+      <LoadingAnimation duration={2500} onComplete={() => {}} color="#c5c6c7" />
       <Navbar />
       <Hero />
       <section className="scroll-section overflow-hidden">

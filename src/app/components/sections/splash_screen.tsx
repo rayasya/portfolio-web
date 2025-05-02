@@ -1,56 +1,104 @@
 "use client";
 
-import { useEffect } from "react";
-import gsap from "gsap";
-const SplitTextJS = require("split-text-js");
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-export default function SplashScreen({
+interface LoadingAnimationProps {
+  duration?: number;
+  onComplete?: () => void;
+  color?: string;
+}
+
+export function LoadingAnimation({
+  duration = 2500,
   onComplete,
-}: {
-  onComplete: () => void;
-}) {
+  color = "#000000",
+}: LoadingAnimationProps) {
+  const [isVisible, setIsVisible] = useState(true);
+
   useEffect(() => {
-    const titles = gsap.utils.toArray(".text-splash");
-    if (!titles.length) return;
-
-    const tl = gsap.timeline({ repeat: -1 });
-    titles.forEach((title) => {
-      const splitTitle = new SplitTextJS(title);
-      tl.from(
-        splitTitle.chars,
-        {
-          opacity: 0,
-          y: 80,
-          rotateX: 90,
-          stagger: 0.01,
-        },
-        "<"
-      ).to(
-        splitTitle.chars,
-        {
-          opacity: 0,
-          y: -80,
-          rotateX: -90,
-          stagger: 0.01,
-        },
-        "<1"
-      );
-    });
-
     const timer = setTimeout(() => {
-      onComplete();
-    }, 3000);
+      setIsVisible(false);
+      if (onComplete) onComplete();
+    }, duration);
 
     return () => clearTimeout(timer);
-  }, [onComplete]);
+  }, [duration, onComplete]);
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+        repeat: Number.POSITIVE_INFINITY,
+        repeatType: "reverse" as const,
+        repeatDelay: 0.5,
+      },
+    }),
+  };
+
+  const text = "LOADING";
 
   return (
-    <div className="h-screen flex justify-center items-center bg-white text-black">
-      <div className="text-wrapper text-[5rem] text-center m-0 leading-0">
-        <p className="text-splash">Booting Up Creativity...</p>
-        <p className="text-splash">Initializing Portfolio...</p>
-        <p className="text-splash">Executing Innovative Ideas...</p>
-      </div>
-    </div>
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background"
+          initial={{ opacity: 1 }}
+          exit={{
+            opacity: 0,
+            transition: { duration: 0.5, ease: "easeInOut" },
+          }}
+        >
+          <motion.div
+            className="absolute bottom-10 right-10 flex items-end justify-end"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="flex">
+              {text.split("").map((letter, index) => (
+                <motion.span
+                  key={index}
+                  custom={index}
+                  variants={letterVariants}
+                  initial="hidden"
+                  animate="visible"
+                  style={{
+                    color,
+                    fontSize: "5rem",
+                    fontWeight: "bold",
+                    lineHeight: 1,
+                    fontFamily: "'Inter', sans-serif",
+                    display: "inline-block",
+                    marginRight: letter === " " ? "1rem" : "0.1rem",
+                    textShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                  }}
+                >
+                  {letter}
+                </motion.span>
+              ))}
+            </div>
+
+            <motion.div
+              className="absolute -bottom-2 left-0 h-1 bg-black"
+              style={{ backgroundColor: color }}
+              initial={{ width: "0%" }}
+              animate={{
+                width: ["0%", "100%", "0%"],
+                transition: {
+                  duration: 2,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "easeInOut",
+                },
+              }}
+            />
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

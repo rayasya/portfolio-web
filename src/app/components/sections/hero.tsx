@@ -5,7 +5,7 @@ import SpotlightCard from "../ui/spotlight_card";
 export default function Hero() {
   return (
     <section>
-      <div className="relative w-full min-h-screen bg-background">
+      <div className="relative w-full h-screen bg-background">
         <Particles
           particleColors={["#ffffff", "#ffffff"]}
           particleCount={250}

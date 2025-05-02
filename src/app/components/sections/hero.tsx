@@ -5,7 +5,7 @@ import SpotlightCard from "../ui/spotlight_card";
 export default function Hero() {
   return (
     <section>
-      <div className="relative w-full h-screen bg-background">
+      <div className="relative w-full min-h-screen bg-background">
         <Particles
           particleColors={["#ffffff", "#ffffff"]}
           particleCount={250}
@@ -16,8 +16,10 @@ export default function Hero() {
           alphaParticles={false}
           disableRotation={false}
         />
-        <div className="absolute top-0 flex justify-center items-center pointer-events-none h-screen w-full">
-          <h1 className="text-5xl font-semibold">Hi, I'm Rayasya Cahyana</h1>
+        <div className="absolute inset-0 flex justify-center items-center pointer-events-none px-4 text-center">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-semibold text-white max-w-4xl">
+            Hi, I'm Rayasya Cahyana
+          </h1>
         </div>
       </div>
     </section>

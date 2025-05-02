@@ -17,7 +17,7 @@ export default function Navbar() {
               Home
               <div className="bg-teal-500 h-[2px] w-0 group-hover:w-full transition-all duration-500"></div>
             </a>
-            <a href="#" className="group">
+            <a href="#about" className="group">
               About Me
               <div className="bg-teal-500 h-[2px] w-0 group-hover:w-full transition-all duration-500"></div>
             </a>
@@ -46,15 +46,15 @@ export default function Navbar() {
                 Home
                 <div className="bg-teal-500 h-[2px] w-0 group-hover:w-full transition-all duration-500"></div>
               </a>
-              <a href="#" className="group py-2">
+              <a href="#about" className="group py-2">
                 About Me
                 <div className="bg-teal-500 h-[2px] w-0 group-hover:w-full transition-all duration-500"></div>
               </a>
-              <a href="#" className="group py-2">
+              <a href="#projects" className="group py-2">
                 Projects
                 <div className="bg-teal-500 h-[2px] w-0 group-hover:w-full transition-all duration-500"></div>
               </a>
-              <a href="#" className="group py-2">
+              <a href="#contacts" className="group py-2">
                 Contacts
                 <div className="bg-teal-500 h-[2px] w-0 group-hover:w-full transition-all duration-500"></div>
               </a>

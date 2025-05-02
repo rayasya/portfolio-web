@@ -1,13 +1,4 @@
 import {
-  Bell,
-  FileLineChart,
-  Home,
-  Mail,
-  Search,
-  Settings,
-  User,
-} from "lucide-react";
-import ScrollVelocity, {
   GlassIconsItem,
   ScrollVelocityWithGlassIcons,
 } from "../ui/scroll_velocity";
@@ -138,31 +129,40 @@ export default function TechStack() {
     },
   ];
 
-  const iconSets = [
+  const getResponsiveIconSets = (iconSize = "1.8em") => [
     {
       items: pngIconItems,
       className: "justify-center",
-      iconSize: "1.8em",
+      iconSize: iconSize,
       gridCols: "grid-flow-col auto-cols-max",
     },
     {
       items: pngIconItems2,
       className: "justify-center",
-      iconSize: "1.8em",
+      iconSize: iconSize,
       gridCols: "grid-flow-col auto-cols-max",
     },
   ];
 
-  return (
-    <div className="h-screen w-full bg-background flex flex-col gap-10 px-28 py-36 rounded-t-[4rem] border-t-2 border-white/30">
-      <h1 className="text-4xl font-semibold text-center">My Developer DNA</h1>
-      <p className="text-center px-36">
-        These are the core technologies that make up my identity as a developer.
-        From the frontlines of user interfaces to the depths of backend logic,
-        this is the stack I’m built on.
-      </p>
+  const iconSets = getResponsiveIconSets();
 
-      <div className="w-full mt-10">
+  return (
+    <div
+      className="min-h-screen w-full bg-background flex flex-col justify-center md:justify-start gap-4 sm:gap-6 md:gap-10 px-4 sm:px-8 md:px-16 lg:px-28 py-12 sm:py-16 md:py-24 lg:py-36 rounded-t-[2rem] md:rounded-t-[4rem] border-t-2 border-white/30"
+      id="techstack"
+    >
+      <div className="flex flex-col items-center justify-center">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-center">
+          My Developer DNA
+        </h1>
+        <p className="text-center text-sm sm:text-base px-4 sm:px-12 md:px-24 lg:px-36 mt-2 md:mt-3">
+          These are the core technologies that make up my identity as a
+          developer. From the frontlines of user interfaces to the depths of
+          backend logic, this is the stack I'm built on.
+        </p>
+      </div>
+
+      <div className="w-full mt-6 sm:mt-8 md:mt-10 overflow-hidden">
         <ScrollVelocityWithGlassIcons
           iconSets={[iconSets[0]]}
           scrollVelocityProps={{
@@ -170,6 +170,7 @@ export default function TechStack() {
             numCopies: 2,
           }}
         />
+        <div className="h-2 sm:h-4"></div>
         <ScrollVelocityWithGlassIcons
           iconSets={[iconSets[1]]}
           scrollVelocityProps={{

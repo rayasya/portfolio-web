@@ -60,3 +60,9 @@ body {
 .shine {
   animation: shine 5s linear infinite;
 }
+
+@media screen and (max-width: 768px) {
+  .section_custom {
+    @apply px-6 py-15;
+  }
+}

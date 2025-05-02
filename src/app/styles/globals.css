@@ -1,48 +1,62 @@
 @import "tailwindcss";
 
+@theme {
+  --color-background: #0b0c10;
+  --color-surface: #1f2833;
+  --color-primary: #45a29e;
+  --color-secondary: #5c5470;
+  --color-accent: #c84b8e;
+  --color-highlight: #f9dc5c;
+  --color-text: #c5c6c7;
+  --color-white: #ffffff;
+}
+
 :root {
-  --background-light: #f9f9f9;
-  --background-dark: #161616;
-  --card-light: #ffffff;
-  --card-dark: #2a2a3a;
-  --primary-light: #6c5ce7;
-  --primary-dark: #a29bfe;
-  --secondary-light: #ff7675;
-  --secondary-dark: #e05658;
-  --text-light: #2d3436;
-  --text-dark: #d6d6e0;
+  --background: #0b0c10;
+  --surface: #1f2833;
+  --primary: #45a29e;
+  --secondary: #5c5470;
+  --accent: #c84b8e;
+  --highlight: #f9dc5c;
+  --text: #c5c6c7;
+  --white: #ffffff;
+}
+* {
+  cursor: none;
 }
 
-/* Mode Light */
-[data-theme="light"] {
-  --background: var(--background-light);
-  --text: var(--text-light);
-  --primary: var(--primary-light);
+html {
+  scroll-behavior: smooth;
 }
 
-/* Mode Dark */
-[data-theme="dark"] {
-  --background: var(--background-dark);
-  --text: var(--text-dark);
-  --primary: var(--primary-dark);
-}
-
-/* Terapkan ke body */
 body {
-  background-color: var(--background-dark);
-  color: var(--text-dark);
+  background-color: var(--background);
+  color: var(--white);
   transition: background-color 0.3s, color 0.3s;
+  font-family: "Poppins", sans-serif;
+}
+.cursor-hover {
+  width: 400px !important;
+  height: 250px !important;
+  border-radius: 16px !important;
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: normal;
 }
 
-/* Styling tombol */
-.btn-toggle {
-  background-color: var(--primary);
-  color: var(--text);
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s;
+.section_custom {
+  @apply px-28 py-10;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: -100%;
+  }
+}
+
+.shine {
+  animation: shine 5s linear infinite;
 }

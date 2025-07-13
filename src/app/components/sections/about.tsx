@@ -19,17 +19,6 @@ export default function About() {
         </h1>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 w-full sm:w-auto">
           <SpotlightCard
-            spotlightColor="rgba(0, 229, 255, 0.2)"
-            className="py-3 px-4 md:py-4 md:px-6 w-full sm:w-auto"
-          >
-            <a
-              href="/Muhammad Rayasya Dziqi Cahyana_CV.pdf"
-              className="block text-center sm:text-left"
-            >
-              Download CV
-            </a>
-          </SpotlightCard>
-          <SpotlightCard
             spotlightColor="rgba(69, 162, 158, 0.5)"
             className="py-3 px-4 md:py-4 md:px-6 flex gap-2 md:gap-3 items-center justify-center sm:justify-start w-full sm:w-auto"
           >

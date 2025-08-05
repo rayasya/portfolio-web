@@ -1,86 +1,95 @@
 "use client";
 
-import { useEffect } from "react";
-import Navbar from "./components/layouts/navbar";
-import About from "./components/sections/about";
-import Hero from "./components/sections/hero";
-import Projects from "./components/sections/projects";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import TechStack from "./components/sections/techstack";
-import Footer from "./components/layouts/footer";
-import { LoadingAnimation } from "./components/sections/splash_screen";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useState, useEffect } from "react";
+import {
+  Navigation,
+  HeroSection,
+  AboutSection,
+  TechStackSection,
+  ProjectsSection,
+  CertificatesSection,
+  ContactSection,
+  Footer,
+} from "../components";
 
 export default function Home() {
+  const [activeSection, setActiveSection] = useState("home");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   useEffect(() => {
-    const scrollSection =
-      document.querySelectorAll<HTMLElement>(".scroll-section");
+    const handleScroll = () => {
+      const sections = [
+        "home",
+        "about",
+        "techstack",
+        "projects",
+        "certificates",
+        "contact",
+      ];
+      const scrollPosition = window.scrollY + 100;
 
-    scrollSection.forEach((section) => {
-      const wrapper = section.querySelector(".wrapper")!;
-      const items = wrapper.querySelectorAll<HTMLElement>(".item");
-
-      initScroll(section, items);
-    });
-
-    function initScroll(section: HTMLElement, items: NodeListOf<HTMLElement>) {
-      items.forEach((item, index) => {
-        if (index !== 0) {
-          gsap.set(item, { yPercent: 100 });
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const height = element.offsetHeight;
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + height
+          ) {
+            setActiveSection(section);
+            break;
+          }
         }
-      });
+      }
+    };
 
-      const timeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          pin: true,
-          start: "top top",
-          end: `+=${items.length * 100}%`,
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-        defaults: { ease: "none" },
-      });
-
-      items.forEach((item, index) => {
-        timeline.to(item, {
-          scale: 1,
-          borderRadius: "10px",
-        });
-
-        const next = items[index + 1];
-        if (next) {
-          timeline.to(next, { yPercent: 0 }, "<");
-        }
-      });
-    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
-    <>
-      <LoadingAnimation duration={2500} onComplete={() => {}} color="#c5c6c7" />
-      <Navbar />
-      <Hero />
-      <section className="scroll-section overflow-hidden">
-        <div className="wrapper h-screen">
-          <div className="list flex flex-col items-center h-full relative p-1">
-            <div className="item w-screen h-full absolute inset-0 shadow-lg overflow-hidden">
-              <About />
-            </div>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Seamless Background */}
+      <div className="fixed inset-0 gradient-bg"></div>
 
-            <div className="item w-screen h-full absolute inset-0 shadow-lg overflow-hidden">
-              <Projects />
-            </div>
-
-            <div className="item w-screen h-full absolute inset-0 shadow-lg overflow-hidden">
-              <TechStack />
-            </div>
-          </div>
+      {/* Animated Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-full">
+          {/* Floating orbs with softer colors */}
+          <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-br from-indigo-200/30 to-purple-300/30 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute top-1/3 right-20 w-80 h-80 bg-gradient-to-br from-purple-200/30 to-pink-300/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute bottom-1/3 left-1/3 w-72 h-72 bg-gradient-to-br from-blue-200/30 to-indigo-300/30 rounded-full blur-3xl animate-pulse delay-500"></div>
+          <div className="absolute bottom-20 right-1/3 w-64 h-64 bg-gradient-to-br from-emerald-200/30 to-teal-300/30 rounded-full blur-3xl animate-pulse delay-1500"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-amber-200/20 to-orange-300/20 rounded-full blur-3xl animate-pulse delay-2000"></div>
         </div>
-      </section>
-      <Footer />
-    </>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10">
+        <Navigation
+          activeSection={activeSection}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
+          scrollToSection={scrollToSection}
+          />
+
+        <HeroSection scrollToSection={scrollToSection} />
+        <AboutSection />
+        <TechStackSection />
+        <ProjectsSection />
+        <CertificatesSection />
+        <ContactSection />
+        <Footer />
+      </div>
+    </div>
   );
 }

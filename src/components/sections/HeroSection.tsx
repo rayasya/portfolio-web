@@ -9,13 +9,6 @@ interface HeroSectionProps {
 
 export default function HeroSection({ scrollToSection }: HeroSectionProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const floatingCards = [
-    { icon: "⚡", text: "Fast Performance", delay: "0s" },
-    { icon: "🎨", text: "Beautiful Design", delay: "1s" },
-    { icon: "📱", text: "Mobile First", delay: "2s" },
-    { icon: "🔧", text: "Modern Tech", delay: "3s" },
-  ];
-
   return (
     <section
       id="home"

@@ -3,35 +3,6 @@
 import { useState } from "react";
 
 export default function ContactSection() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [hoveredContact, setHoveredContact] = useState<string | null>(null);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsSubmitting(false);
-
-    // Reset form
-    setFormData({ name: "", email: "", message: "" });
-  };
-
   const contactMethods = [
     {
       id: "email",
@@ -97,12 +68,7 @@ export default function ContactSection() {
 
             <div className="space-y-6">
               {contactMethods.map((method) => (
-                <div
-                  key={method.id}
-                  className="group relative"
-                  onMouseEnter={() => setHoveredContact(method.id)}
-                  onMouseLeave={() => setHoveredContact(null)}
-                >
+                <div key={method.id} className="group relative">
                   <a
                     href={method.link}
                     className="flex items-center p-4 rounded-xl gradient-subtle hover:shadow-lg transition-all duration-300 transform hover:scale-105"

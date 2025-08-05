@@ -1,9 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { TechItem } from "../types";
+import { useState, useEffect, useRef } from "react";
 import { techStack } from "../data";
-import * as simpleIcons from "simple-icons";
 
 export default function TechStackSection() {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -14,13 +12,57 @@ export default function TechStackSection() {
     return techStack.filter((tech) => tech.category === category);
   };
 
-  // Helper function to get icon from simple-icons
-  const getSimpleIcon = (slug: string) => {
-    const iconKey = `si${slug.charAt(0).toUpperCase()}${slug.slice(
-      1
-    )}` as keyof typeof simpleIcons;
-    return (simpleIcons as any)[iconKey];
+  // Helper function to get icon from simple-icons using dynamic import
+  const getSimpleIcon = async (
+    slug: string
+  ): Promise<{ path: string; title: string } | null> => {
+    try {
+      const icon = await import(`simple-icons/icons/${slug}.js`);
+      return icon.default;
+    } catch (error) {
+      console.error("Error loading icon:", error);
+      return null;
+    }
   };
+
+  // State to store loaded icons
+  const [loadedIcons, setLoadedIcons] = useState<
+    Record<string, { path: string; title: string } | null>
+  >({});
+  const loadedIconsRef = useRef<Set<string>>(new Set());
+
+  // Load icons when component mounts or category changes
+  useEffect(() => {
+    const loadIcons = async () => {
+      const currentTechs = getTechByCategory(activeCategory);
+      const iconsToLoad = currentTechs
+        .filter(
+          (tech) =>
+            tech.simpleIconsSlug &&
+            !loadedIconsRef.current.has(tech.simpleIconsSlug)
+        )
+        .map((tech) => tech.simpleIconsSlug!);
+
+      if (iconsToLoad.length === 0) return;
+
+      const iconPromises = iconsToLoad.map(async (slug) => {
+        const icon = await getSimpleIcon(slug);
+        loadedIconsRef.current.add(slug);
+        return { slug, icon };
+      });
+
+      const results = await Promise.all(iconPromises);
+      const newIcons: Record<string, { path: string; title: string } | null> =
+        {};
+      results.forEach(({ slug, icon }) => {
+        newIcons[slug] = icon;
+      });
+
+      setLoadedIcons((prev) => ({ ...prev, ...newIcons }));
+    };
+
+    loadIcons();
+  }, [activeCategory]);
 
   const categories = [
     {
@@ -94,7 +136,7 @@ export default function TechStackSection() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {getTechByCategory(activeCategory).map((tech, index) => {
             const simpleIcon = tech.simpleIconsSlug
-              ? getSimpleIcon(tech.simpleIconsSlug)
+              ? loadedIcons[tech.simpleIconsSlug]
               : null;
 
             return (

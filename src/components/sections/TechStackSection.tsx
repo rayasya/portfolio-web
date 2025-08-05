@@ -14,6 +14,14 @@ export default function TechStackSection() {
     return techStack.filter((tech) => tech.category === category);
   };
 
+  // Helper function to get icon from simple-icons
+  const getSimpleIcon = (slug: string) => {
+    const iconKey = `si${slug.charAt(0).toUpperCase()}${slug.slice(
+      1
+    )}` as keyof typeof simpleIcons;
+    return (simpleIcons as any)[iconKey];
+  };
+
   const categories = [
     {
       id: "all",
@@ -84,119 +92,91 @@ export default function TechStackSection() {
 
         {/* Tech Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-          {getTechByCategory(activeCategory).map((tech, index) => (
-            <div
-              key={tech.name}
-              className="group relative"
-              onMouseEnter={() => setHoveredTech(tech.name)}
-              onMouseLeave={() => setHoveredTech(null)}
-              style={{
-                animationDelay: `${index * 0.1}s`,
-              }}
-            >
-              <div className="relative">
-                {/* Main Card */}
-                <div className="relative bg-[var(--background)]/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-[var(--border)] transition-all duration-500 transform hover:scale-110 hover:rotate-3 hover:shadow-2xl cursor-pointer group-hover:bg-[var(--background)]">
-                  {/* Glow Effect */}
-                  <div className="absolute inset-0 gradient-badge rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          {getTechByCategory(activeCategory).map((tech, index) => {
+            const simpleIcon = tech.simpleIconsSlug
+              ? getSimpleIcon(tech.simpleIconsSlug)
+              : null;
 
-                  {/* Icon Container */}
-                  <div className="relative z-10 flex flex-col items-center space-y-3">
-                    <div className="w-16 h-16 gradient-avatar rounded-xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">
-                      {tech.simpleIconsSlug &&
-                      simpleIcons[
-                        `si${
-                          tech.simpleIconsSlug.charAt(0).toUpperCase() +
-                          tech.simpleIconsSlug.slice(1)
-                        }`
-                      ] ? (
-                        <svg
-                          width="40"
-                          height="40"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-label={tech.name}
-                        >
-                          <path
-                            d={
-                              simpleIcons[
-                                `si${
-                                  tech.simpleIconsSlug.charAt(0).toUpperCase() +
-                                  tech.simpleIconsSlug.slice(1)
-                                }`
-                              ].path
-                            }
-                            fill="currentColor"
-                          />
-                        </svg>
-                      ) : (
-                        tech.icon
-                      )}
-                    </div>
+            return (
+              <div
+                key={tech.name}
+                className="group relative"
+                onMouseEnter={() => setHoveredTech(tech.name)}
+                onMouseLeave={() => setHoveredTech(null)}
+                style={{
+                  animationDelay: `${index * 0.1}s`,
+                }}
+              >
+                <div className="relative">
+                  {/* Main Card */}
+                  <div className="relative bg-[var(--background)]/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-[var(--border)] transition-all duration-500 transform hover:scale-110 hover:rotate-3 hover:shadow-2xl cursor-pointer group-hover:bg-[var(--background)]">
+                    {/* Glow Effect */}
+                    <div className="absolute inset-0 gradient-badge rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                    {/* Tech Name */}
-                    <div className="text-center">
-                      <h3 className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--primary)] transition-colors duration-300">
-                        {tech.name}
-                      </h3>
-                      <p className="text-xs text-[var(--text-muted)] mt-1 capitalize">
-                        {tech.category}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Floating Elements */}
-                  <div className="absolute top-2 right-2 w-2 h-2 bg-[var(--primary)] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></div>
-                  <div className="absolute bottom-2 left-2 w-1 h-1 bg-[var(--primary-light)] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse delay-300"></div>
-                </div>
-
-                {/* Enhanced Tooltip */}
-                {hoveredTech === tech.name && (
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 px-4 py-2 bg-[var(--background)]/95 dark:bg-[var(--background)]/95 backdrop-blur-sm text-[var(--foreground)] text-sm rounded-lg opacity-0 animate-tooltip-fade-in-up pointer-events-none whitespace-nowrap z-20 border border-[var(--border)]/50">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-lg">
-                        {tech.simpleIconsSlug &&
-                        simpleIcons[
-                          `si${
-                            tech.simpleIconsSlug.charAt(0).toUpperCase() +
-                            tech.simpleIconsSlug.slice(1)
-                          }`
-                        ] ? (
+                    {/* Icon Container */}
+                    <div className="relative z-10 flex flex-col items-center space-y-3">
+                      <div className="w-16 h-16 gradient-avatar rounded-xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">
+                        {simpleIcon ? (
                           <svg
-                            width="20"
-                            height="20"
+                            width="40"
+                            height="40"
                             viewBox="0 0 24 24"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
                             aria-label={tech.name}
                           >
-                            <path
-                              d={
-                                simpleIcons[
-                                  `si${
-                                    tech.simpleIconsSlug
-                                      .charAt(0)
-                                      .toUpperCase() +
-                                    tech.simpleIconsSlug.slice(1)
-                                  }`
-                                ].path
-                              }
-                              fill="currentColor"
-                            />
+                            <path d={simpleIcon.path} fill="currentColor" />
                           </svg>
                         ) : (
                           tech.icon
                         )}
-                      </span>
-                      <span className="font-medium">{tech.name}</span>
+                      </div>
+
+                      {/* Tech Name */}
+                      <div className="text-center">
+                        <h3 className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--primary)] transition-colors duration-300">
+                          {tech.name}
+                        </h3>
+                        <p className="text-xs text-[var(--text-muted)] mt-1 capitalize">
+                          {tech.category}
+                        </p>
+                      </div>
                     </div>
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-[var(--background)]/95 dark:border-t-[var(--background)]/95"></div>
+
+                    {/* Floating Elements */}
+                    <div className="absolute top-2 right-2 w-2 h-2 bg-[var(--primary)] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></div>
+                    <div className="absolute bottom-2 left-2 w-1 h-1 bg-[var(--primary-light)] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse delay-300"></div>
                   </div>
-                )}
+
+                  {/* Enhanced Tooltip */}
+                  {hoveredTech === tech.name && (
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 px-4 py-2 bg-[var(--background)]/95 dark:bg-[var(--background)]/95 backdrop-blur-sm text-[var(--foreground)] text-sm rounded-lg opacity-0 animate-tooltip-fade-in-up pointer-events-none whitespace-nowrap z-20 border border-[var(--border)]/50">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-lg">
+                          {simpleIcon ? (
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              aria-label={tech.name}
+                            >
+                              <path d={simpleIcon.path} fill="currentColor" />
+                            </svg>
+                          ) : (
+                            tech.icon
+                          )}
+                        </span>
+                        <span className="font-medium">{tech.name}</span>
+                      </div>
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-[var(--background)]/95 dark:border-t-[var(--background)]/95"></div>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

@@ -17,8 +17,14 @@ export default function TechStackSection() {
     slug: string
   ): Promise<{ path: string; title: string } | null> => {
     try {
-      const icon = await import(`simple-icons/icons/${slug}.js`);
-      return icon.default;
+      // Use dynamic import with the full module path
+      const iconModule = await import("simple-icons");
+      const iconKey = `si${slug.charAt(0).toUpperCase()}${slug.slice(1)}`;
+      const iconsRecord = iconModule as unknown as Record<
+        string,
+        { path: string; title: string }
+      >;
+      return iconsRecord[iconKey] || null;
     } catch (error) {
       console.error("Error loading icon:", error);
       return null;
